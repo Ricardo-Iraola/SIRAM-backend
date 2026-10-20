@@ -1,0 +1,29 @@
+from django.contrib import admin
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from core.views import (
+    UsuarioViewSet, OrganismoViewSet, CasoViewSet, DenunciaViewSet,
+    PersonaViewSet, AnimalViewSet, DocumentoViewSet, SeguimientoViewSet,
+    AuditoriaViewSet, DashboardView
+)
+
+router = DefaultRouter()
+router.register("usuarios", UsuarioViewSet, basename="usuario")
+router.register("organismos", OrganismoViewSet)
+router.register("casos", CasoViewSet)
+router.register("denuncias", DenunciaViewSet)
+router.register("personas", PersonaViewSet)
+router.register("animales", AnimalViewSet)
+router.register("documentos", DocumentoViewSet)
+router.register("seguimientos", SeguimientoViewSet)
+router.register("auditoria", AuditoriaViewSet, basename="auditoria")
+
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("api/auth/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
+    path("api/auth/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("api/auth/me/", UsuarioViewSet.as_view({"get": "me"}), name="me"),
+    path("api/dashboard/", DashboardView.as_view(), name="dashboard"),
+    path("api/", include(router.urls)),
+]
