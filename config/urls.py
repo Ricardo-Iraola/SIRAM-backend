@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic import RedirectView
 from rest_framework.routers import DefaultRouter
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from core.views import (
@@ -26,4 +27,5 @@ urlpatterns = [
     path("api/auth/me/", UsuarioViewSet.as_view({"get": "me"}), name="me"),
     path("api/dashboard/", DashboardView.as_view(), name="dashboard"),
     path("api/", include(router.urls)),
+    path("", RedirectView.as_view(url="api/", permanent=False)),
 ]
